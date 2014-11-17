@@ -3,11 +3,33 @@
 body {
     font-family: 'Ubuntu', 'Helvetica Neue', 'Helvetica', sans-serif;
     font-weight: 400;
+    margin-right: 10%;
+    margin-left: 10%;
+}
+
+#sectionHeader {
+	text-align: center;
 }
 
 .product-picture {
     float: left;
-    height: 130px;
+    height: 200px;
     margin-right: 10px;
 }
 
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+.deleted {
+	color: #d3d3d3;
+	text-decoration: line-through;
+}
+
+.commentsExist {
+	display: none;
+}
+
+.noComments { }

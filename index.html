@@ -6,18 +6,54 @@
         <title>Product Comments</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
+
     </head>
     <body>
 
-        <main class="container">
+        <main class="container-fluid" ng-app='ajax-challenge' ng-controller='CommentsController'>
             <section>
-                <img src="img/super-bass-o-matic-76.jpg" alt="product picture" class="product-picture">
-                <h1>The Super Bass-o-Matic '76</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia cumque deserunt ullam repudiandae nisi corporis! Ipsum, ducimus commodi, itaque porro distinctio consequuntur! Autem doloremque numquam nemo ex nulla tempora quis! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde nihil doloribus excepturi quisquam error possimus veritatis facere, commodi cumque ab atque dolore ducimus obcaecati ipsa, impedit! Consequuntur, eligendi iure cumque!</p>
+                <div class='row'>
+                    <div class='col-md-2'>
+                        <img src="img/super-bass-o-matic-76.jpg" alt="product picture" class="product-picture">
+                    </div>
+                    <div class='col-md-10'>
+                        <h1>The Super Bass-o-Matic '76</h1>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia cumque deserunt ullam repudiandae nisi corporis! Ipsum, ducimus commodi, itaque porro distinctio consequuntur! Autem doloremque numquam nemo ex nulla tempora quis! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde nihil doloribus excepturi quisquam error possimus veritatis facere, commodi cumque ab atque dolore ducimus obcaecati ipsa, impedit! Consequuntur, eligendi iure cumque!</p>
+                    </div>
+            </div>
             </section>
 
             <section>
-                <h2>Add a Comment</h2>
+                <h2 id='sectionHeader'>Add a Comment</h2>
+
+                <form ng-submit='addComment()'>
+                    <div class='row'>
+                        <div class='col-md-4 vcenter'>
+                            <label>Name</label>
+                             <input type="text" id="newReview-name" class="form-control "
+                            placeholder="Your Name" ng-model='newReview.name'/>
+                        </div>  
+                        <div class='col-md-4 vcenter'>              
+                            <label>Review Title</label>
+                            <input type="text" id="newReview-title" class="form-control" placeholder="Review title" ng-model='newReview.title'/>
+                        </div>
+                        <div class='col-md-2 vcenter'>
+                            <label>Rating</label><br>
+                            <rating max="5" ng-model="newReview.rating"></rating>
+                        </div>
+                        <div class='col-md-1 vcenter'>
+                            <button type="submit" class="btn btn-primary" ng-disabled="inserting">Add Review</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class='row'>
+                        <div class='col-md-12 vcenter'>
+                            <label for="newReview-body">Comment</label>
+                            <input type="text" id="newReview-body" class="form-control"
+                            placeholder="Review" ng-model='newReview.body'/>
+                        </div>
+                    </div>
+                </form>
                 <!--  
                 put a form here for entering a new comment
                 the user must select a rating, and enter a name, title, and comment body
@@ -29,12 +65,53 @@
             </section>
 
             <section>
-                <h2>Comments</h2>
+                <h2 id='sectionHeader'>Comments</h2>
                 <!-- 
                 display existing comments here
                 each comment should also have UI allowing the user to vote up/down the comment
                 as well as delete it
                  -->
+
+                <div class='row'>
+                    <div class='col-md-10'></div>
+                    <div class='col-md-2'>
+                        <button class="btn btn-primary" ng-click='refreshReviews()'>Refresh</button>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Rating</th>
+                            <th>Score</th>
+                            <th>Title</th>
+                            <th>Review</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat='review in reviews' ng-class='{deleted: review.deleted}'>
+                            <td>{{review.name}}</td>
+                            <td /><rating max="5" ng-model="review.rating" readonly="true"></rating></td>
+                            <td>
+                                {{review.score || 0}}
+                                <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementVotes(review, 1)"></span>
+                                <span class="glyphicon glyphicon-thumbs-down" ng-click="incrementVotes(review, -1)"></span>
+                            </td>
+                            <td>
+                                {{review.title}}
+                            </td>
+                            <td>
+                                {{review.body}}
+                            </td>
+                            <td><input type="checkbox" ng-model='review.deleted' ng-change='updateReview(review)'/></td>
+                        </tr>
+                        <tr id='noComments'>
+                            <td>There are no comments yet!</td>
+                        </tr>
+                    </tbody>
+                </table>
             </section>
 
         </main>
